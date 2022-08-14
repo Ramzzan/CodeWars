@@ -6,38 +6,52 @@ using AutoMapper;
 using C.Sharp.Model;
 
 
-Service service = new Service();
-
-service.InsertUser();
-var userList = service.RemoveFutureDate(service.userList.ToArray());
-
-Console.WriteLine(userList.Length);
-
-var list = userList.OrderBy(x => x.GPSDate).ToList();
-
-
-foreach (var user in userList)
-{
-    Console.WriteLine($"name{user.Name} date:{user.GPSDate}");
-}
-
 Console.WriteLine("Done.");
 
-class Service
+class Employee
 {
-    public List<User> userList = new();
-    public void InsertUser()
-    {
-        userList.Add(new User() { Id = 7, Name = "User6", GPSDate = DateTime.Now.AddSeconds(50) });
-        userList.Add(new User() { Id = 8, Name = "User7", GPSDate = DateTime.Now.AddSeconds(90) });
-        userList.Add(new User() { Id = 9, Name = "User8", GPSDate = DateTime.Now.AddSeconds(160) });
+    private string name;
+    private string alias;
+    private decimal salary = 3000.00m;
 
-        Console.WriteLine("add 10 users success.");
-    }
-    public User[] RemoveFutureDate(User[] usersList)
+    // Constructor:
+    public Employee(string name, string alias)
     {
-        usersList = usersList.Where(g => g.GPSDate.Subtract(DateTime.Now).TotalMinutes <= 2 ||
-        g.GPSDate.Year >= DateTime.Now.AddYears(-3).Year).ToArray();
-        return usersList;
+        // Use this to qualify the fields, name and alias:
+        this.name = name;
+        this.alias = alias;
+    }
+
+    // Printing method:
+    public void printEmployee()
+    {
+        Console.WriteLine("Name: {0}\nAlias: {1}", name, alias);
+        // Passing the object to the CalcTax method by using this:
+        Console.WriteLine("Taxes: {0:C}", Tax.CalcTax(this));
+    }
+
+    public decimal Salary
+    {
+        get { return salary; }
+    }
+}
+
+class Tax
+{
+    public static decimal CalcTax(Employee E)
+    {
+        return 0.08m * E.Salary;
+    }
+}
+
+class MainClass
+{
+    static void Main()
+    {
+        // Create objects:
+        Employee E1 = new Employee("Mingda Pan", "mpan");
+
+        // Display results:
+        E1.printEmployee();
     }
 }
