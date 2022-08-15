@@ -1,57 +1,66 @@
 ﻿
-
-
-
 using AutoMapper;
 using C.Sharp.Model;
 
+Console.WriteLine(" success.");
 
-Console.WriteLine("Done.");
-
-class Employee
+Trip trip = new Trip();
+trip.TripList();
+public enum PaymentMethodType
 {
-    private string name;
-    private string alias;
-    private decimal salary = 3000.00m;
-
-    // Constructor:
-    public Employee(string name, string alias)
-    {
-        // Use this to qualify the fields, name and alias:
-        this.name = name;
-        this.alias = alias;
-    }
-
-    // Printing method:
-    public void printEmployee()
-    {
-        Console.WriteLine("Name: {0}\nAlias: {1}", name, alias);
-        // Passing the object to the CalcTax method by using this:
-        Console.WriteLine("Taxes: {0:C}", Tax.CalcTax(this));
-    }
-
-    public decimal Salary
-    {
-        get { return salary; }
-    }
+    Cash = 0,
+    Visa = 1
 }
 
-class Tax
+
+public class Trip
 {
-    public static decimal CalcTax(Employee E)
+    public int Id { get; set; }
+    public int Cost { get; set; }
+    public PaymentMethodType? PaymentMethod { get; set; }
+
+    public Trip() { }
+    public Trip(int id, int cost, PaymentMethodType? paymentMethod)
     {
-        return 0.08m * E.Salary;
+        Id = id;
+        Cost = cost;
+        PaymentMethod = paymentMethod;
     }
+
+    public void TripList()
+    {
+        List<Trip> tripList = new()
+        {
+            new Trip(1, 10, PaymentMethodType.Cash),
+            new Trip(2, 10, PaymentMethodType.Visa),
+            new Trip(2, 10, PaymentMethodType.Cash),
+              new Trip(2, 10, null),
+        };
+
+
+        foreach (var item in tripList)
+        {
+            Console.WriteLine($"id:{item.Id}v");
+
+            switch (item.PaymentMethod)
+            {
+                case PaymentMethodType.Cash :
+                    Console.WriteLine("Cash");
+                    break;
+
+                case PaymentMethodType.Visa :
+                    Console.WriteLine("Visa");
+                    break;
+
+                default:
+                    Console.WriteLine("None");
+                    break;
+            }
+
+            Console.WriteLine("--------------------------");
+
+        }
+    }
+
 }
 
-class MainClass
-{
-    static void Main()
-    {
-        // Create objects:
-        Employee E1 = new Employee("Mingda Pan", "mpan");
-
-        // Display results:
-        E1.printEmployee();
-    }
-}
