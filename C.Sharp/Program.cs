@@ -1,57 +1,49 @@
 ﻿
 
 
+List<Employee> employees = new();
+Employee emp1 = new Employee { Name = "Stefan", Skills = new List<string> { "C", "C++", "Java" } };
+Employee emp2 = new Employee { Name = "Karan", Skills = new List<string> { "SQL Server", "C#", "ASP.NET" } };
+Employee emp3 = new Employee { Name = "Lalit", Skills = new List<string> { "C#", "ASP.NET MVC", "Windows Azure", "SQL Server" } };
 
-using AutoMapper;
-using C.Sharp.Model;
+employees.Add(emp1);
+employees.Add(emp2);
+employees.Add(emp3);
+
+var result = employees.Select(x=> x.Skills).ToList();
 
 
-Console.WriteLine("Done.");
+Console.WriteLine("---------- useing select() ---------");
 
-class Employee
+foreach (var skills in result)
 {
-    private string name;
-    private string alias;
-    private decimal salary = 3000.00m;
 
-    // Constructor:
-    public Employee(string name, string alias)
+    foreach (var skill in skills)
     {
-        // Use this to qualify the fields, name and alias:
-        this.name = name;
-        this.alias = alias;
-    }
-
-    // Printing method:
-    public void printEmployee()
-    {
-        Console.WriteLine("Name: {0}\nAlias: {1}", name, alias);
-        // Passing the object to the CalcTax method by using this:
-        Console.WriteLine("Taxes: {0:C}", Tax.CalcTax(this));
-    }
-
-    public decimal Salary
-    {
-        get { return salary; }
+        Console.WriteLine(skill);
     }
 }
 
-class Tax
+
+Console.WriteLine("---------- useing selectMany() ---------");
+
+
+//Console.WriteLine("click enter to show SelectMany()");
+//Console.ReadLine();
+
+var resultMany = employees.SelectMany(x => x.Skills).ToList();
+
+foreach (var skill in resultMany)
 {
-    public static decimal CalcTax(Employee E)
-    {
-        return 0.08m * E.Salary;
-    }
+    Console.WriteLine(skill);
 }
 
-class MainClass
-{
-    static void Main()
-    {
-        // Create objects:
-        Employee E1 = new Employee("Mingda Pan", "mpan");
 
-        // Display results:
-        E1.printEmployee();
-    }
+
+Console.ReadLine();
+
+public class Employee
+{
+    public string Name { get; set; }
+    public List<string> Skills { get; set; }
 }
